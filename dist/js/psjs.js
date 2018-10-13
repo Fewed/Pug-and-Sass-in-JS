@@ -22,7 +22,7 @@ let caf = cb => cancelAnimationFrame(cb);
 let gs = element => getComputedStyle(element);
 
 
-function crAr(size, value) {
+function crAr(size, value = 0) {
 	let primitives = ['boolean', 'null', 'undefined', 'number', 'string', 'symbol'],
 			isPrimitive = primitives.indexOf(typeof value) > 0;
 			

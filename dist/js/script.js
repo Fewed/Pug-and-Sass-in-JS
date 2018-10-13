@@ -50,73 +50,9 @@ input
 
 `;
 
-let canv = buildPug(pug),
-		btnC = sel(".btn_clr"),
-		btnE = sel(".btn_er"),
-		input = sel("input");
 
-let ctx = canv.getContext("2d");
 
-let [isDrEn, isDrSt, mode] = [false, false, "draw"];
-const [erSize, erOffset] = [13, 2];
 
-lis("mousedown", e => {
-	let [tar, x, y] = [e.target, e.offsetX, e.offsetY];
 
-	if (tar === canv) {
-		[isDrEn, isDrSt] = [true, true];
-		if (mode === "erase") ctx.clearRect(x + erOffset, y + erOffset, erSize, erSize);
-	}
-});
 
-lis("mouseup", e => { if (e.target === canv) [isDrEn, isDrSt] = [false, false]; });
-
-lis("mousemove", e => {
-	let [tar, x, y] = [e.target, e.offsetX, e.offsetY];
-
-	if (tar === canv && isDrEn) {
-		if (mode === "draw") {
-			if (isDrSt) {
-				ctx.beginPath();
-				ctx.moveTo(x, y);
-				isDrSt = false;
-			}
-			else {
-				ctx.lineTo(x, y);
-				ctx.stroke();
-			}
-		}
-		else if (mode === "erase") ctx.clearRect(x + erOffset, y + erOffset, erSize, erSize);
-	}
-});
-
-lis("click", e => {
-	if (e.target === btnC) ctx.clearRect(0, 0, canv.width, canv.height);
-
-	if (e.target === btnE) {
-		if (mode === "draw") {
-			mode = "erase";
-			btnE.style.backgroundColor = "yellow";
-		}
-		else if (mode === "erase") {
-			mode = "draw";
-			btnE.style.backgroundColor = "transparent";
-		}
-	}
-});
-
-lis("mouseover", e => {
-	if (e.target === canv) {
-	
-	}
-	else {
-	
-	}
-});
-
-lis("change", e => {
-	if (e.target === input) {
-		input.style.borderColor = ctx.strokeStyle = e.target.value;
-		e.target.value = "";
-	}
-});
+buildPug(pug);
