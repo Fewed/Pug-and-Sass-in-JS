@@ -1,58 +1,51 @@
-let sass = `
+let pug = `
 
-.c
-	border: 1px solid #000
-	margin: 0 auto
-	margin-top: 20px
-	display: block
+div(class="hover")
+	ul
+		li 1
+		li 2
+		li 3
 
-.btn_block
-	display: flex
-	flex-direction: row
-	justify-content: center
+`,
 
-button
-	width: 100px
-	height: 50px
-	margin: 20px 10px 0 10px
-	background-color: transparent
-	outline: none
-	border: 1px solid #000
+sass = `
 
-button:hover
-	cursor: pointer
-
-input
-	border: 1px solid #000
-	margin: 0 auto
-	margin-top: 20px
-	display: block
-	outline: none
+body
+	padding-top: 50px
 	text-align: center
 
-.curDr
-	cursor: url(curDr.cur), pointer
+div
+	width: 300px
+	height: 150px
+	border: 1px solid #000
+	margin: 0 auto
 
-.curEr
-	cursor: url(curEr.cur), pointer
+.hover:hover
+	cursor: pointer
+	border-color: red
 
 `;
 
 crEl(`style(type="text/css") ${buildSass(sass)}`, sel("head"), "in");
+pug = buildPug(pug);
 
-let pug = `
+let url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
 
-canvas(class="c" width="1200" height="300")
-div(class="btn_block")
-	button(class="btn_er") erase
-	button(class="btn_clr") clear
-input
+let pug2 = `
+
+a(href="http://google.com")
+	img(src="${url}" alt="img")
 
 `;
 
+sel(".hover").addEventListener("click", () => {
+	pug.remove();
+	buildPug(pug2);
+});
 
 
 
 
 
-buildPug(pug);
+
+
