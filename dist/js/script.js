@@ -44,8 +44,80 @@ sel(".hover").addEventListener("click", () => {
 });
 
 
+// regex tests
 
 
+let testStr = `
 
+div
+div
+div
+div
 
+/*
+div
+div
+div
+div
+*/
+
+div
+div
+div
+div
+
+/*
+div
+div
+div
+div
+*/
+
+div
+div
+div
+div
+
+`;
+
+// remove /* */
+//let reg = /\/\*[\n\w\d\s\-+='"?;:#$()*\\`@№%^&\[\]{}]*\*\//g;
+
+// remove //
+//let reg = /\/\/[\w \t]*/g;
+
+let str = [
+	`a.q.q2#aa5.oo(href="#" data-num='89') 1. is it good? - yep))`,
+	`a.q.q2#aa5.oo(href="#" data-num='89') 1. is it good? - yep))`,
+	`a#aa5.oo(href="#" data-num='89') 1. is it good? - yep))`,
+	`a(href="#" data-num='89') 1. is it good? - yep))`,
+	`a() 1. is it good? - yep))`,
+	`a 1. is it good? - yep))`,
+	`a`,
+	`span 7`,
+	`.q 65`
+];
+
+// get tags excluding .class
+let str2 = str.map(item => item.match(/\w*[.#( ]?/)[0].match(/\w*/)[0]);
+
+// get values
+let str3 = str.map(item => {
+	if (item.lastIndexOf(") ") > 0) return item.slice(item.indexOf(") ") + 2);
+	else if (item.lastIndexOf(" ") > 0) return item.slice(item.indexOf(" ") + 1);
+	return ""
+});
+
+// get id + classes + attributes
+let str4 = str.map((item, i) => item.slice(item.indexOf(str2[i]) + str2[i].length,
+	item.indexOf(str3[i]) - 1));
+
+// get tags finally
+str2 = str2.map(item => item || "div");
+
+/*
+console.table(str2);
+console.table(str3);
+console.table(str4);
+*/
 
