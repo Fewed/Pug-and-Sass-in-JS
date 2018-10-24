@@ -118,14 +118,14 @@ function crAr(size, value = 0) {
 function insertElement(tag = "div", value = "", attributes = [], ref = "default", mode = "after") {
 	let el = document.createElement(tag);
 	el.textContent = value;
-	attributes.map(item => {if (item.length === 2) el.setAttribute(...item)});
+	attributes.map(item => (item.length === 2) && el.setAttribute(...item));
 
-	if (ref === "default") sel("body").insertBefore(el, sel("script")[0]);
+	if (ref === "default") document.body.insertBefore(el, sel("script")[0]);
 	else {
 		if (mode === "after") ref.parentNode.insertBefore(el, ref.nextSibling);
 		else if (mode === "before") ref.parentNode.insert(el, ref);
 		else if (mode === "in") {
-			if (ref.tagName === "BODY") ref.insertBefore(el, sel("script")[0]);
+			if (ref === document.body) ref.insertBefore(el, sel("script")[0]);
 			else {
 				if (ref.children.length) ref.appendChild(el);
 				else ref.insertBefore(el, ref.children[0]);
@@ -137,6 +137,6 @@ function insertElement(tag = "div", value = "", attributes = [], ref = "default"
 }
 
 
-insertElement(`span`, 7);
+insertElement(`span`, 7, [["id", "qw7"]], sel("body"), "in");
 
 
