@@ -1,33 +1,4 @@
-// let pug = `
 
-// div(class="hover")
-// 	ul
-// 		li 1
-// 		li 2
-// 		li 3
-
-// `,
-
-// sass = `
-
-// body
-// 	padding-top: 50px
-// 	text-align: center
-
-// div
-// 	width: 300px
-// 	height: 150px
-// 	border: 1px solid #000
-// 	margin: 0 auto
-
-// .hover:hover
-// 	cursor: pointer
-// 	border-color: red
-
-// `;
-
-// crEl(`style(type="text/css") ${buildSass(sass)}`, sel("head"), "in");
-// pug = buildPug(pug);
 
 // let url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
 
@@ -44,43 +15,6 @@
 // });
 
 
-// // regex tests
-
-
-// let testStr = `
-
-// div
-// div
-// div
-// div
-
-// /*
-// div
-// div
-// div
-// div
-// */
-
-// div
-// div
-// div
-// div
-
-// /*
-// div
-// div
-// div
-// div
-// */
-
-// div
-// div
-// div
-// div
-
-// `;
-
-
 
 // let str = [
 // 	`a.q.q2#aa5.oo(href="#" data-num='89') 1. is it good? - yep))`,
@@ -93,3 +27,42 @@
 // 	`span 7`,
 // 	`.q 65`
 // ];
+
+
+
+let pug = `
+
+div(class="hover")
+	ul
+		li 1
+		/*
+		li 2
+		li 3
+		*/
+		li 4
+	.g 1#[span 2]3
+	// div
+	section
+
+`;
+
+
+let sass = `
+
+*
+	color: #fff
+	background-color: #000
+
+div
+	color: yellow
+	border: 1px solid #fff
+	&:hover
+		cursor: pointer
+	& .g
+		border: none
+		& span
+			color: lime
+
+`;
+
+console.log(render(pug, sass));

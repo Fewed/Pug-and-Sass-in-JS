@@ -10,7 +10,6 @@
 // }
 
 
-
 function insertElement(tag = "div", value = "", attributes = [], ref = "default", mode = "after") {
 	let el = document.createElement(tag);
 	el.textContent = value;
@@ -31,9 +30,6 @@ function insertElement(tag = "div", value = "", attributes = [], ref = "default"
 
 	return el
 }
-
-
-//log(insertElement(`span`, 7, [["id", "qw7"]], sel("body"), "in"));
 
 
 function getValue(str) {
@@ -91,20 +87,6 @@ function crEl(str, ref = "default", mode = "after") {
 	return insertElement(tag || "div", value, attrs, ref, mode);
 }
 
-// let str = [
-// 	`a.q.q2#aa5.oo(href="#" data-num='89') 1. is it good? - yep))`,
-// 	`a.q.q2#aa5.oo(href="#" data-num='89') 1. is it good? - yep))`,
-// 	`a#aa5.oo(href="#" data-num='89') 1. is it good? - yep))`,
-// 	`a(href="#" data-num='89') 1. is it good? - yep))`,
-// 	`a() 1. is it good? - yep))`,
-// 	`a 1. is it good? - yep))`,
-// 	`a`,
-// 	`span 7`,
-// 	`.q 65`
-// ];
-
-// log(str.map(item => crEl(item)));
-
 
 function inline(str, ref = "default", modex = "after") {
 	// get value
@@ -142,8 +124,6 @@ function inline(str, ref = "default", modex = "after") {
 
 	return textEl;
 }
-
-//log(inline(`a 1#[span 2]3#[span 4]5`));
 
 
 function remTabs(string) {
@@ -188,7 +168,7 @@ function buildPug(target) {
 		else inline(string, ref, "in");
 	});
 
-//	return extra[0];
+	return extra[0][0];
 }
 
 
@@ -229,43 +209,6 @@ function buildSass(target) {
 
 function render(pug, sass) {
 	crEl(`style(type=text/css) ${buildSass(sass)}`, document.head, "in");
-	buildPug(pug);
+	return buildPug(pug);
 }
 
-
-let pug = `
-
-div(class="hover")
-	ul
-		li 1
-		/*
-		li 2
-		li 3
-		*/
-		li 4
-	.g 1#[span 2]3
-	// div
-	section
-
-`;
-
-
-let sass = `
-
-*
-	color: #fff
-	background-color: #000
-
-div
-	color: yellow
-	border: 1px solid #fff
-	&:hover
-		cursor: pointer
-	& .g
-		border: none
-		& span
-			color: lime
-
-`;
-
-render(pug, sass);
