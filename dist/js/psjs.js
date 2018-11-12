@@ -10,6 +10,23 @@
 // }
 
 
+function replaceEntities(text) {
+	let entities = new Map([
+		["nbsp", 160],
+		["ensp", 8194],
+		["emsp", 8195]
+	]);
+
+	[...entities.keys()].map(key => {
+		let reg = new RegExp(`&${key};`, "g");
+		let val = String.fromCharCode(entities.get(key));
+		text = text.replace(reg, val);
+	});
+
+	return text;
+}
+
+
 function insertElement(tag = "div", value = "", attributes = [], ref = "default", mode = "after") {
 	let el = document.createElement(tag);
 	el.textContent = value;
@@ -40,7 +57,7 @@ function getValue(str) {
 	}
 	else if (str.includes(" ")) value = str.slice(str.indexOf(" ") + 1);
 
-	return value;
+	return replaceEntities(value);
 }
 
 
@@ -176,34 +193,33 @@ function buildSass(target) {
 	// remove tabs
 	let [text, tabs] = remTabs(target);
 
-	// concatenation
-	let [pre, preLast, tabPre] = [null, null, null];
-	text = text.map((item, i) => {
-		if (!tabs[i]) preLast = pre = item;
+	// insertion
+	let list = [];
 
-		if (item[0] === "&") {
-			item = item.replace("&", (tabs[i] > tabPre) ? preLast : pre);
-			if (tabs[i] !== tabPre) tabPre = tabs[i];
-			[tabs[i], preLast] = [0, item];
+	function insert(array, index) {
+		let temp = array[index];
+		for (let i = index; i--;) temp = temp.replace("&", array[i]);
+		return temp;
+	}
+
+	text = text.map((str, i) => {
+		if (str.includes("&") || (str.search(/\w+/gi) !== -1 && !tabs[i])) {
+			if (tabs[i] > list.length-1) list.push(str);
+			else list[tabs[i]] = str;
+			str = insert(list, tabs[i]);
+			tabs[i] = true;
 		}
-		else if (tabs[i] && item[0] !== "&") tabs[i] = 1;
+		else if (!tabs[i]) tabs[i] = true;
+		else tabs[i] = false;
 
-		return item;
+		return str;
 	});
-
-	// placing {, }, ;
-	text = text.map((item, i) => {
-		item = item.trim();
-
-		item += (tabs[i]) ? ";" : "{";
-		
-		if (!tabs[i+1]) item += "}";
-
-		return item;
-	});
-
+	
 	// minification
-	return text.join("").replace(/: /g, ":").replace(/, /g, ",").replace(/;}/g, "}");
+	text = text.map((item, i) => tabs[i] ? `}${item}{` : `${item};`);
+	text = text.join("").slice(1) + "}";
+	text = text.replace(/: /g, ":").replace(/, /g, ",").replace(/;}/g, "}").replace(/[ .-\w\d]+{}/g, "");
+	return text;
 }
 
 
@@ -212,3 +228,7 @@ function render(pug, sass) {
 	return buildPug(pug);
 }
 
+
+function postRender() {
+	setTimeout(() => render(pug, sass), 0);
+}
