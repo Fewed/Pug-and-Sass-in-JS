@@ -1,15 +1,4 @@
 ;
-
-// function crAr(size, value = 0) {
-// 	let primitives = ['boolean', 'null', 'undefined', 'number', 'string', 'symbol'],
-// 			isPrimitive = primitives.indexOf(typeof value) > 0;
-			
-// 	if (!isPrimitive) value = JSON.stringify(value);
-
-// 	return [...Array(size)].map(() => isPrimitive ? value : JSON.parse(value));
-// }
-
-
 function replaceEntities(text) {
 	let entities = new Map([
 		["nbsp", 160],
